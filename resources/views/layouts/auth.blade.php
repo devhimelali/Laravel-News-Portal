@@ -20,15 +20,12 @@
           rel="stylesheet">
 
     <!-- Layout config Js -->
-    <script src="{{asset('assets/js/layout.js')}}"></script>
     <!-- Bootstrap Css -->
     <link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css">
     <!-- Icons Css -->
     <link href="{{asset('assets/css/icons.min.css')}}" rel="stylesheet" type="text/css">
     <!-- App Css-->
     <link href="{{asset('assets/css/app.min.css')}}" rel="stylesheet" type="text/css">
-    <!-- custom Css-->
-    <link href="{{asset('assets/css/custom.min.css')}}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="{{ asset('assets/libs/toastr/toastr.min.css') }}">
     @yield('page-style')
 </head>
@@ -50,16 +47,9 @@
 <!-- JAVASCRIPT -->
 <script src="{{asset('assets/libs/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 <script src="{{asset('assets/libs/simplebar/simplebar.min.js')}}"></script>
-<script src="{{asset('assets/js/plugins.js')}}"></script>
-
 
 <script src="{{asset('assets/js/pages/password-addon.init.js')}}"></script>
 
-<!--Swiper slider js-->
-<script src="{{asset('assets/libs/swiper/swiper-bundle.min.js')}}"></script>
-
-<!-- swiper.init js -->
-<script src="{{asset('assets/js/pages/swiper.init.js')}}"></script>
 <script src="{{ asset('assets/libs/toastr/toastr.min.js') }}"></script>
 @yield('page-script')
 
