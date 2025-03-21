@@ -1,66 +1,80 @@
 @extends('layouts.auth')
-@section('title', 'Login')
+@section('title', 'Register')
 @section('content')
     <div class="col-lg-5">
-        <div class="card mb-0">
+        <div class="mb-0 card">
             <div class="row g-0 align-items-center">
-                <!--end col-->
-                <div class="col-xxl-12 mx-auto">
-                    <div class="card mb-0 border-0 shadow-none">
-                        <div class="card-body p-sm-5">
+                <div class="mx-auto col-xxl-12">
+                    <div class="mb-0 border-0 shadow-none card">
+                        <div class="card-body p-sm-4 m-lg-4">
                             <div class="text-center">
-                                <h5 class="fs-3xl">Welcome Back</h5>
-                                <p class="text-muted">Sign in to continue to {{env('APP_NAME')}}</p>
+                                <h5 class="fs-3xl">Register</h5>
+                                <p class="text-muted">Create a new account by filling out the form below.</p>
                             </div>
-                            <div class="p-2 mt-2">
-                                <form action="{{route('login')}}" method="post" id="loginForm">
+                            <div class="p-2 mt-4">
+                                <form action="{{ route('register') }}" method="post" id="registerForm">
                                     @csrf
                                     <div class="mb-3">
-                                        <label for="email" class="form-label">Email <span
+                                        <label for="name" class="form-label">Name <span
                                                 class="text-danger">*</span></label>
                                         <div class="position-relative ">
-                                            <input type="email" class="form-control  password-input"
-                                                   name="email" id="email" placeholder="Enter email">
+                                            <input type="text" class="form-control password-input" id="name"
+                                                   placeholder="Ex: John Doe" name="name" value="{{ old('name') }}">
+                                            <div class="invalid-feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="username" class="form-label">Email <span
+                                                class="text-danger">*</span></label>
+                                        <div class="position-relative ">
+                                            <input type="email" class="form-control password-input" id="username"
+                                                   placeholder="Ex: user@example.com" name="email"
+                                                   value="{{ old('email') }}">
                                             <div class="invalid-feedback"></div>
                                         </div>
                                     </div>
 
                                     <div class="mb-3">
-                                        <div class="float-end">
-                                            <a href="{{route('password.request')}}" class="text-muted">Forgot
-                                                password?</a>
-                                        </div>
-                                        <label class="form-label" for="password-input">Password <span
+                                        <label class="form-label" for="password">Password <span
                                                 class="text-danger">*</span></label>
-                                        <div class="position-relative auth-pass-inputgroup mb-3">
+                                        <div class="mb-3 position-relative auth-pass-inputgroup">
                                             <input type="password" class="form-control pe-5 password-input "
-                                                   placeholder="Enter password" name="password" id="password-input">
+                                                   placeholder="Enter password" id="password" name="password">
                                             <button
-                                                class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon"
+                                                class="top-0 btn btn-link position-absolute end-0 text-decoration-none text-muted password-addon"
                                                 type="button" id="password-addon"><i
-                                                    class="ri-eye-fill align-middle"></i></button>
+                                                    class="align-middle ri-eye-fill"></i></button>
                                             <div class="invalid-feedback"></div>
                                         </div>
                                     </div>
-
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                               id="auth-remember-check">
-                                        <label class="form-check-label" for="auth-remember-check">Remember
-                                            me</label>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="password-confirmation">Confirm Password <span
+                                                class="text-danger">*</span></label>
+                                        <div class="mb-3 position-relative auth-pass-inputgroup">
+                                            <input type="password" class="form-control pe-5 password-input "
+                                                   placeholder="Enter confirm password" id="password-confirmation"
+                                                   name="password_confirmation">
+                                            <button
+                                                class="top-0 btn btn-link position-absolute end-0 text-decoration-none text-muted password-addon"
+                                                type="button" id="password-addon"><i
+                                                    class="align-middle ri-eye-fill"></i></button>
+                                            <div class="invalid-feedback"></div>
+                                        </div>
                                     </div>
 
                                     <div class="mt-4">
-                                        <button class="btn btn-primary w-100" type="submit" id="submitBtn">Sign In
+                                        <button class="btn btn-primary w-100" type="submit" id="submitBtn">
+                                            Sign Up
                                         </button>
                                     </div>
                                 </form>
 
-                                <div class="text-center mt-4">
+                                <div class="mt-4 text-center">
                                     <p class="mb-0">Don't have an account ?
-                                        <a href="{{route('register')}}"
+                                        <a href="{{ route('login') }}"
                                            class="fw-semibold text-secondary text-decoration-underline">
-                                            SignUp</a>
+                                            SignIn
+                                        </a>
                                     </p>
                                 </div>
                             </div>
@@ -76,7 +90,7 @@
 @section('page-script')
     <script>
         $(document).ready(function () {
-            $('#loginForm').on('submit', function (e) {
+            $('#registerForm').on('submit', function (e) {
                 e.preventDefault();
                 let formData = new FormData(this);
                 $.ajax({
@@ -93,7 +107,7 @@
                         $('#submitBtn').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...');
                     },
                     success: function (response) {
-                        notify('success', 'Logged in successfully');
+                        notify('success', 'Account created successfully');
                         setTimeout(() => {
                             window.location.href = "{{route('redirect')}}";
                         }, 1000);
@@ -121,7 +135,7 @@
                     },
                     complete: function () {
                         $('#submitBtn').attr('disabled', false);
-                        $('#submitBtn').html('Sign In');
+                        $('#submitBtn').html('Sign Up');
                     }
                 });
             })
