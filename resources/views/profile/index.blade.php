@@ -18,5 +18,11 @@
         <div class="col-md-6">
             @include('profile.partials.update-profile-information-form')
         </div>
+        <div class="col-md-6">
+            @include('profile.partials.update-password-form')
+        </div>
     </div>
+@endsection
+@section('page-script')
+    <script src="{{asset('assets/js/pages/password-addon.init.js')}}"></script>
 @endsection

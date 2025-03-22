@@ -56,11 +56,7 @@
                         notify('error', value);
                         let input = $('[name="' + key + '"]');
                         input.addClass('is-invalid');
-                        if (input.closest('.auth-pass-inputgroup').length) {
-                            input.closest('.auth-pass-inputgroup').find('.invalid-feedback').text(value);
-                        } else {
-                            input.next('.invalid-feedback').text(value);
-                        }
+                        input.next('.invalid-feedback').text(value);
                     });
                 },
                 complete: function () {
