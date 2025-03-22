@@ -93,10 +93,17 @@
                         $('#submitBtn').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...');
                     },
                     success: function (response) {
+                        console.log(response);
                         notify('success', 'Logged in successfully');
-                        setTimeout(() => {
-                            window.location.href = "{{route('redirect')}}";
-                        }, 1000);
+                        if (response.two_factor) {
+                            setTimeout(() => {
+                                window.location.href = "{{ route('two-factor.login') }}";
+                            }, 1000);
+                        } else {
+                            setTimeout(() => {
+                                window.location.href = "{{ route('redirect') }}";
+                            }, 1000);
+                        }
                     },
                     error: function (xhr, status, error) {
                         if (xhr.status == 422) {

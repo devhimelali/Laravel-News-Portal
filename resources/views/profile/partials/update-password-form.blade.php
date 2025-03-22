@@ -79,6 +79,7 @@
                 },
                 success: function (response) {
                     notify('success', 'Password updated successfully');
+                    $('#updatePasswordForm')[0].reset();
                 },
                 error: function (xhr, status, error) {
                     let errors = xhr.responseJSON.errors;
