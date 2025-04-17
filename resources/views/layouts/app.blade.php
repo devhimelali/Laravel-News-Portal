@@ -170,7 +170,10 @@
     show('{{ $toast['type'] ?? 'info' }}', options);
     @endforeach
 
-    function notify(type, msg, position = 'topRight') {
+    function notify(type, msg, position = 'toast-bottom-right') {
+        toastr.options.positionClass = position;
+        toastr.options.closeButton = true;
+        toastr.options.progressBar = true;
         toastr[type](msg);
     }
 

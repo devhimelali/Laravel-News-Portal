@@ -39,6 +39,14 @@
                         <span data-key="t-dashboard">Dashboard</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('categories.index') }}"
+                       class="nav-link menu-link @if (Route::current()->getName() == 'categories.index') active @endif"
+                       aria-expanded="false">
+                        <i class="ph-list-bullets"></i>
+                        <span data-key="t-categories">Categories</span>
+                    </a>
+                </li>
 
             </ul>
         </div>

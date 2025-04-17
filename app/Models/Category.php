@@ -15,18 +15,35 @@ class Category extends Model
         'slug',
         'description',
         'parent_id',
+        'show_in_home',
+        'show_in_menu',
     ];
 
+    /**
+     * The parent category of this category.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function parent(): BelongsTo
     {
         return $this->belongsTo(Category::class, 'parent_id');
     }
 
+    /**
+     * Get the immediate children of the category.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function children(): HasMany
     {
         return $this->hasMany(Category::class, 'parent_id');
     }
 
+    /**
+     * Get the category's image.
+     *
+     * @return MorphOne
+     */
     public function image(): MorphOne
     {
         return $this->morphOne(Image::class, 'imageable');

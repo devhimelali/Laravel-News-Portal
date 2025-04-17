@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->text('description')->nullable();
             $table->foreignId('parent_id')->nullable()->constrained('categories')->cascadeOnDelete();
+            $table->boolean('show_in_home')->default(false);
+            $table->boolean('show_in_menu')->default(false);
             $table->timestamps();
         });
     }
