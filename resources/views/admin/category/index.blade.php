@@ -68,7 +68,7 @@
                                 <th scope="col">Parent Category</th>
                                 <th scope="col" style="max-width: 105px; width: 105px">Show in Menu</th>
                                 <th scope="col" style="max-width: 105px; width: 105px">Show in Home</th>
-                                <th scope="col" style="max-width: 80px; width: 80px">Action</th>
+                                <th scope="col" style="max-width: 130px; width: 130px">Action</th>
                             </tr>
                             </thead>
                         </table>
@@ -84,6 +84,7 @@
         <div class="modal-dialog modal-lg">
             <form action="{{route('categories.store')}}" method="post" id="createCategoryForm">
                 @csrf
+                <input type="hidden" name="_method" value="POST" id="method">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="myModalLabel">Create a New Category</h5>
@@ -95,20 +96,22 @@
                             <div class="col-md-6">
                                 <!-- English Name -->
                                 <div class="mb-3">
-                                    <label for="en_name" class="form-label fw-semibold">English Name <span class="text-danger">*</span></label>
+                                    <label for="en_name" class="form-label fw-semibold">English Name <span
+                                            class="text-danger">*</span></label>
                                     <input type="text" class="form-control" id="en_name" name="en_name"
                                            placeholder="Enter English Name">
                                 </div>
                                 <!-- Bengali Name -->
                                 <div class="mb-3">
-                                    <label for="bn_name" class="form-label fw-semibold">Bengali Name <span class="text-danger">*</span></label>
+                                    <label for="bn_name" class="form-label fw-semibold">Bengali Name <span
+                                            class="text-danger">*</span></label>
                                     <input type="text" class="form-control" id="bn_name" name="bn_name"
                                            placeholder="Enter Bengali Name">
                                 </div>
                                 <!-- Parent Category -->
                                 <div class="mb-3">
-                                    <label for="parent_category" class="form-label fw-semibold">Parent Category</label>
-                                    <select name="parent_category" id="parent_category" class="form-select">
+                                    <label for="parent_id" class="form-label fw-semibold">Parent Category</label>
+                                    <select name="parent_category" id="parent_id" class="form-select">
                                         <option value="">Select Parent Category</option>
                                         @foreach ($parentCategories as $parentCategory)
                                             <option
@@ -153,6 +156,11 @@
                                     </button>
                                 </div>
                             </div>
+                            <div class="col-12 mb-3">
+                                <label for="description" class="form-label fw-semibold">Description</label>
+                                <textarea class="form-control" id="description" name="description" rows="5"
+                                          placeholder="Enter Description"></textarea>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -167,144 +175,15 @@
 @endsection
 @section('vendor-style')
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/cdn/datatables/dataTables.bootstrap5.min.css') }}">
+    <link rel="stylesheet" href="{{asset('assets/libs/sweetalert2/sweetalert2.min.css')}}">
 @endsection
 @section('vendor-script')
     <script src="{{ asset('assets/cdn/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('assets/cdn/datatables/dataTables.bootstrap5.min.js') }}"></script>
+    <script src="{{asset('assets/libs/sweetalert2/sweetalert2.min.js')}}"></script>
 @endsection
 @section('page-script')
-    <script>
-        function setupImagePreview(inputSelector, previewSelector) {
-            const input = document.querySelector(inputSelector);
-            const previewImg = document.querySelector(previewSelector);
-            const removeBtn = previewImg.parentElement.querySelector('.remove-btn');
-
-            input.click();
-
-            input.addEventListener('change', function () {
-                if (this.files && this.files[0]) {
-                    const reader = new FileReader();
-                    reader.onload = function (e) {
-                        previewImg.src = e.target.result;
-                        removeBtn.style.display = 'block';
-                    };
-                    reader.readAsDataURL(this.files[0]);
-                }
-            });
-
-            removeBtn.addEventListener('click', function () {
-                previewImg.src = "https://melbournebuildingproducts.com.au/assets/placeholder-image-2.png";
-                input.value = '';
-                this.style.display = 'none';
-            });
-        }
-    </script>
-
-    <script>
-        $(document).ready(function () {
-            $('#dataTable').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: "{{ route('categories.index') }}",
-                columns: [
-                    {
-                        data: 'DT_RowIndex',
-                        name: 'DT_RowIndex',
-                        orderable: false
-                    },
-                    {
-                        data: 'image',
-                        name: 'image'
-                    },
-                    {
-                        data: 'bn_name',
-                        name: 'bn_name'
-                    },
-                    {
-                        data: 'en_name',
-                        name: 'en_name'
-                    },
-                    {
-                        data: 'parent_category',
-                        name: 'parent_category'
-                    },
-                    {
-                        data: 'show_in_menu',
-                        name: 'show_in_menu'
-                    },
-                    {
-                        data: 'show_in_home',
-                        name: 'show_in_home'
-                    },
-                    {
-                        data: 'actions',
-                        name: 'actions',
-                        orderable: false,
-                        searchable: false
-                    },
-                ]
-            });
-
-            function filterData() {
-                let parrentCategory = $('#parent_category').val();
-                let showInMenu = $('#show_in_menu').val();
-                let showInHome = $('#show_in_home').val();
-                $('#dataTable').DataTable().ajax.url("{{ route('categories.index') }}?parent_category=" + parrentCategory + "&show_in_menu=" + showInMenu + "&show_in_home=" + showInHome).load();
-            }
-
-            $('#parent_category, #show_in_menu, #show_in_home').on('change', function () {
-                filterData();
-            });
-
-            $('#createCategoryForm').on('submit', function (e) {
-                e.preventDefault();
-                let formData = new FormData(this);
-                let url = $(this).attr('action');
-                let method = $(this).attr('method');
-                $.ajax({
-                    url: url,
-                    type: method,
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    beforeSend: function () {
-                        $('.is-invalid').removeClass('is-invalid');
-                        $('.invalid-feedback').text('');
-                        $('#submitBtn').attr('disabled', true);
-                        $('#submitBtn').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Processing...');
-                    },
-                    success: function (response) {
-                        if (response.status == 'success') {
-                            $('#createModal').modal('hide');
-                            $('#dataTable').DataTable().ajax.reload();
-                            notify('success', response.message);
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        if (xhr.status == 422) {
-                            let errors = xhr.responseJSON.errors;
-                            $.each(errors, function (key, value) {
-                                notify('error', value);
-                                let input = $('[name="' + key + '"]');
-                                input.addClass('is-invalid');
-                                input.next('.invalid-feedback').text(value);
-                            });
-                        }else if (xhr.status === 429) {
-                            notify('error', 'Too many failed attempts. Please try again later.');
-                        }else if (xhr.status === 500) {
-                            notify('error', 'Something went wrong on our end. Please try again later.');
-                        } else {
-                            notify('error', error);
-                        }
-                    },
-                    complete: function () {
-                        $('#submitBtn').attr('disabled', false);
-                        $('#submitBtn').html('Save');
-                    }
-                });
-            })
-        });
-    </script>
+    @include('admin.category.partials.script')
 @endsection
 @section('page-style')
     <style>

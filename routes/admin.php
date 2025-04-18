@@ -8,4 +8,6 @@ Route::middleware(['auth', 'role:admin', 'verified'])->group(function () {
         return view('admin.dashboard.index');
     })->name('admin.dashboard');
     Route::resource('categories', CategoryController::class);
+    Route::get('categories/{category}/toggle-visibility',
+        [CategoryController::class, 'toggleVisibility'])->name('categories.toggle.visibility');
 });
